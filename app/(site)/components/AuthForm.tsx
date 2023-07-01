@@ -81,6 +81,7 @@ const AuthForm = () => {
               label='Name'
               register={register}
               errors={errors}
+              disabled={isLoading}
             />
           )}
           <Input
@@ -89,6 +90,7 @@ const AuthForm = () => {
             type='email'
             register={register}
             errors={errors}
+            disabled={isLoading}
           />
           <Input
             id='password'
@@ -96,6 +98,7 @@ const AuthForm = () => {
             type='password'
             register={register}
             errors={errors}
+            disabled={isLoading}
           />
           <div>
             <Button
@@ -142,6 +145,30 @@ const AuthForm = () => {
               icon={BsGoogle}
               onClick={() => socialAction('google')}
             />
+          </div>
+        </div>
+        <div
+          className='
+        flex
+        gap-2
+        justify-center
+        text-sm
+        mt-6
+        px-2
+        text-gray-500'
+        >
+          <div>
+            {variant === 'LOGIN'
+              ? 'New to messenger?'
+              : 'Already have an account?'}
+          </div>
+          <div
+            onClick={toggleVariant}
+            className='underline cursor-pointer'
+          >
+            {variant === 'LOGIN'
+              ? 'Create an account'
+              : 'Login'}
           </div>
         </div>
       </div>
