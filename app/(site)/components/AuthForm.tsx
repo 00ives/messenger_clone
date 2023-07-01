@@ -1,5 +1,6 @@
 'use client';
 
+import axios from 'axios';
 import { useCallback, useState } from 'react';
 import {
   FieldValues,
@@ -10,6 +11,7 @@ import Input from '@/app/components/inputs/Input';
 import Button from '@/app/components/Button';
 import AuthSocialButton from './AuthSocialButton';
 import { BsGithub, BsGoogle } from 'react-icons/bs';
+import toast from 'react-hot-toast';
 
 type Variant = 'LOGIN' | 'REGISTER';
 
@@ -41,7 +43,7 @@ const AuthForm = () => {
     setIsLoading(true);
 
     if (variant === 'REGISTER') {
-      //Axios Register
+      axios.post('/api/register', data).catch(() => toast);
     }
     if (variant === 'LOGIN') {
       // NextAuth SignIn
@@ -175,5 +177,5 @@ const AuthForm = () => {
     </div>
   );
 };
-///////////////////////////stopped at 38:20m
+///////////////////////////stopped at 1:32:22
 export default AuthForm;
