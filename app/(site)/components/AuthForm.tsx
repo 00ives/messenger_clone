@@ -1,32 +1,32 @@
-'use client'
+'use client';
 
-import axios from 'axios'
-import { useCallback, useState } from 'react'
+import axios from 'axios';
+import { useCallback, useState } from 'react';
 import {
   FieldValues,
   SubmitHandler,
   useForm,
-} from 'react-hook-form'
-import Input from '@/app/components/inputs/Input'
-import Button from '@/app/components/Button'
-import AuthSocialButton from './AuthSocialButton'
-import { BsGithub, BsGoogle } from 'react-icons/bs'
-import { toast } from 'react-hot-toast'
-import { signIn } from 'next-auth/react'
+} from 'react-hook-form';
+import Input from '@/app/components/inputs/Input';
+import Button from '@/app/components/Button';
+import AuthSocialButton from './AuthSocialButton';
+import { BsGithub, BsGoogle } from 'react-icons/bs';
+import { toast } from 'react-hot-toast';
+import { signIn } from 'next-auth/react';
 
-type Variant = 'LOGIN' | 'REGISTER'
+type Variant = 'LOGIN' | 'REGISTER';
 
 const AuthForm = () => {
-  const [variant, setVariant] = useState<Variant>('LOGIN')
-  const [isLoading, setIsLoading] = useState(false)
+  const [variant, setVariant] = useState<Variant>('LOGIN');
+  const [isLoading, setIsLoading] = useState(false);
 
   const toggleVariant = useCallback(() => {
     if (variant === 'LOGIN') {
-      setVariant('REGISTER')
+      setVariant('REGISTER');
     } else {
-      setVariant('LOGIN')
+      setVariant('LOGIN');
     }
-  }, [variant])
+  }, [variant]);
 
   const {
     register,
@@ -38,16 +38,16 @@ const AuthForm = () => {
       email: '',
       password: '',
     },
-  })
+  });
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    setIsLoading(true)
+    setIsLoading(true);
 
     if (variant === 'REGISTER') {
       axios
         .post('/api/register', data)
         .catch(() => toast.error('Something went wrong!'))
-        .finally(() => setIsLoading(false))
+        .finally(() => setIsLoading(false));
     }
     if (variant === 'LOGIN') {
       signIn('credentials', {
@@ -56,21 +56,32 @@ const AuthForm = () => {
       })
         .then((callback) => {
           if (callback?.error) {
-            toast.error('Invalid credentials')
+            toast.error('Invalid credentials');
           }
 
           if (callback?.ok && !callback?.error) {
-            toast.success('Login in!')
+            toast.success('Login in!');
           }
         })
-        .finally(() => setIsLoading(false))
+        .finally(() => setIsLoading(false));
     }
-  }
+  };
 
   const socialAction = (action: string) => {
-    setIsLoading(true)
-    //NextAuth Social Sign In
-  }
+    setIsLoading(true);
+
+    signIn(action, { redirect: false })
+      .then((callback) => {
+        if (callback?.error) {
+          toast.error('Invalid Credentials');
+        }
+
+        if (callback?.ok && !callback?.error) {
+          toast.success('Logged In!');
+        }
+      })
+      .finally(() => setIsLoading(false));
+  };
 
   return (
     <div
@@ -192,7 +203,7 @@ const AuthForm = () => {
         </div>
       </div>
     </div>
-  )
-}
-///////////////////////////stopped at 1:32:22
-export default AuthForm
+  );
+};
+///////////////////////////stopped at 1:57:29 but having an error withthe google, and github authorized sign ins
+export default AuthForm;
